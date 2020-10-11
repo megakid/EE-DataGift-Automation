@@ -23,3 +23,9 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - name: Pack
+      run: dotnet pack --configuration Release --no-build
+    - name: Push
+      env:
+        NUGETAPIKEY: ${{ secrets.NUGETAPIKEY }}
+      run: dotnet nuget push **/*.nupkg -k $NUGETAPIKEY -s https://api.nuget.org/v3/index.json
