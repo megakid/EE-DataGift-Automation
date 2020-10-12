@@ -91,6 +91,11 @@ namespace EEDataGift
                 if (selectDonor == null || selectRecipient == null)
                     throw new Exception("Couldn't find donor and recipient <select> dropdown elements");
 
+                IWebElement form = null;
+                IWebElement mbLabel = null;
+                IWebElement incrementButton = null;
+                IWebElement giftButton = null;
+
                 // These take a while to populate so keep trying...
                 const int maxAttempts = 10;
                 var attempts = 0;
@@ -118,6 +123,25 @@ namespace EEDataGift
                             }
                         }
                         await Task.Delay(75);
+
+
+                        // locate the entire giftDataForm
+                        form = driver
+                            .FindElement(By.Id("giftDataForm"));
+
+                        // Search for the amount (MB/GB) display span
+                        mbLabel = form.FindElements(By.TagName("span"))
+                            .Single(s => s.GetAttribute("class")?.Contains("giftingDisplayAmount", StringComparison.OrdinalIgnoreCase) == true);
+
+                        // Search for the increment button
+                        incrementButton = form.FindElements(By.TagName("button"))
+                            .Single(s => s.GetAttribute("class")?.Contains("ee-icon-plus", StringComparison.OrdinalIgnoreCase) == true);
+
+                        // Now find and click the "Gift" button
+                        giftButton = form.FindElements(By.TagName("button"))
+                            .Single(s => s.GetAttribute("class")?.Contains("gift", StringComparison.OrdinalIgnoreCase) == true
+                                && s.Text?.Contains("gift", StringComparison.OrdinalIgnoreCase) == true);
+
                         break;
                     }
                     catch
@@ -129,18 +153,6 @@ namespace EEDataGift
                     }
                 }
 
-                // locate the entire giftDataForm
-                var form = driver
-                    .FindElement(By.Id("giftDataForm"));
-
-                // Search for the amount (MB/GB) display span
-                var mbLabel = form.FindElements(By.TagName("span"))
-                    .Single(s => s.GetAttribute("class")?.Contains("giftingDisplayAmount loaded", StringComparison.OrdinalIgnoreCase) == true);
-
-                // Search for the increment button
-                var incrementButton = form.FindElements(By.TagName("button"))
-                    .Single(s => s.GetAttribute("class")?.Contains("ee-icon-plus", StringComparison.OrdinalIgnoreCase) == true);
-
                 // While the display shows less than we want to gift, click the increment button
                 var currentGift = ParseMegabytes(mbLabel.Text);
                 while (currentGift < mbToGift)
@@ -150,11 +162,6 @@ namespace EEDataGift
 
                     currentGift = ParseMegabytes(mbLabel.Text);
                 }
-
-                // Now find and click the "Gift" button
-                var giftButton = form.FindElements(By.TagName("button"))
-                    .Single(s => s.GetAttribute("class")?.Contains("gift", StringComparison.OrdinalIgnoreCase) == true
-                        && s.Text?.Contains("gift", StringComparison.OrdinalIgnoreCase) == true);
 
                 Console.WriteLine($"Gifting {currentGift}MB from 0{from} to 0{to}.");
 
