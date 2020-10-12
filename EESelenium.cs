@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace EEDataGift
 {
+    /// <summary>
+    /// Main class to perform the selenium automation
+    /// </summary>
     public class EESelenium
     {
         private readonly string _username;
         private readonly string _password;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public EESelenium(string username, string password)
         {
             _username = username ?? throw new ArgumentNullException(nameof(username));

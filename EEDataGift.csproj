@@ -4,10 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Author>megakid</Author>
     <PackageProjectUrl>https://github.com/megakid/EE-DataGift-Automation</PackageProjectUrl>
-    <Description>ee.co.uk data gift automation script using C# Selenium chrome driver.</Description>
+    <Description>ee.co.uk data gift automation script using C# Selenium chrome driver. Windows only.</Description>
     <RepositoryUrl>https://github.com/megakid/EE-DataGift-Automation</RepositoryUrl>
   </PropertyGroup>
 
