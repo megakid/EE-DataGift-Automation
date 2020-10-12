@@ -28,9 +28,9 @@ namespace EEDataGift
                 throw new Exception("Tool currently only supports Windows!");
 
             var version = ChromeVersionProvider.GetChromeVersion(chromePath);
-            await ChromeDriverDownloader.DownloadChromeDriver(version);
+            var chromeDriverPath = await ChromeDriverDownloader.DownloadChromeDriver(version);
 
-            await new EESelenium(username, password)
+            await new EESelenium(username, password, chromeDriverPath)
                 .DataGift(donorTelephone, recipientTelephone, giftMb);
             return 0;
         }

@@ -14,16 +14,19 @@ namespace EEDataGift
     {
         private readonly string _username;
         private readonly string _password;
+        private readonly string _driverPath;
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public EESelenium(string username, string password)
+        /// <param name="driverPath"></param>
+        public EESelenium(string username, string password, string driverPath = null)
         {
             _username = username ?? throw new ArgumentNullException(nameof(username));
             _password = password ?? throw new ArgumentNullException(nameof(password));
+            _driverPath = driverPath;
         }
 
         internal async Task DataGift(
@@ -34,7 +37,9 @@ namespace EEDataGift
             var from = CleanNumber(donorTelephone ?? throw new ArgumentNullException(nameof(donorTelephone)));
             var to = CleanNumber(recipientTelephone ?? throw new ArgumentNullException(nameof(recipientTelephone)));
 
-            IWebDriver driver = new ChromeDriver();
+            using IWebDriver driver = string.IsNullOrWhiteSpace(_driverPath)
+                ? new ChromeDriver()
+                : new ChromeDriver(ChromeDriverService.CreateDefaultService(_driverPath));
 
             try
             {

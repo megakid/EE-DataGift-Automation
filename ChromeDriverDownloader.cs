@@ -10,7 +10,7 @@ namespace EEDataGift
 {
     static class ChromeDriverDownloader
     {
-        public static async Task DownloadChromeDriver(string chromeVersion)
+        public static async Task<string> DownloadChromeDriver(string chromeVersion)
         {
             var majorVersion = chromeVersion.Split('.').First();
             Console.WriteLine($"chrome.exe version {chromeVersion}, major version is {majorVersion}.");
@@ -38,6 +38,7 @@ namespace EEDataGift
 
             Console.WriteLine($"Unzipped {latestVersion} of chromedriver.exe to working directory.");
 
+            return Path.GetFullPath("chromedriver.exe");
         }
 
         public static string GetFullPath(string fileName)
