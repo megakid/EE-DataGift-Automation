@@ -38,7 +38,7 @@ namespace EEDataGift
 
             Console.WriteLine($"Unzipped {latestVersion} of chromedriver.exe to working directory.");
 
-            return Path.GetFullPath("chromedriver.exe");
+            return Path.GetDirectoryName(Path.GetFullPath("chromedriver.exe"));
         }
 
         public static string GetFullPath(string fileName)
