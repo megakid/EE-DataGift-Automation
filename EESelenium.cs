@@ -23,17 +23,17 @@ namespace EEDataGift
             string recipientTelephone,
             int mbToGift)
         {
-            var from = (donorTelephone ?? throw new ArgumentNullException(nameof(donorTelephone))).TrimStart('0');
-            var to = (recipientTelephone ?? throw new ArgumentNullException(nameof(recipientTelephone)))?.TrimStart('0');
+            var from = CleanNumber(donorTelephone ?? throw new ArgumentNullException(nameof(donorTelephone)));
+            var to = CleanNumber(recipientTelephone ?? throw new ArgumentNullException(nameof(recipientTelephone)));
 
             IWebDriver driver = new ChromeDriver();
-            
+
             try
             {
                 driver.Url = "https://id.ee.co.uk/id/login";
 
                 await Task.Delay(5000);
-                
+
                 // Cookie warning popup
                 foreach (var btn in driver.FindElements(By.TagName("button")))
                 {
@@ -86,10 +86,24 @@ namespace EEDataGift
                     try
                     {
                         // Select the donor in the donor drop down
-                        selectDonor.SelectByText(from, true);
+                        foreach (var opt in selectDonor.Options)
+                        {
+                            if (CleanNumber(opt.Text).Contains(from, StringComparison.OrdinalIgnoreCase))
+                            {
+                                selectDonor.SelectByText(opt.Text);
+                                break;
+                            }
+                        }
                         await Task.Delay(50);
                         // Select the recepient in the recepient drop down
-                        selectRecipient.SelectByText(to, true);
+                        foreach (var opt in selectRecipient.Options)
+                        {
+                            if (CleanNumber(opt.Text).Contains(to, StringComparison.OrdinalIgnoreCase))
+                            {
+                                selectRecipient.SelectByText(opt.Text);
+                                break;
+                            }
+                        }
                         await Task.Delay(75);
                         break;
                     }
@@ -165,6 +179,9 @@ namespace EEDataGift
 
                 throw new InvalidOperationException($"Cannot parse text {text}");
             }
+
+            string CleanNumber(string num)
+                => num?.Replace(" ", "")?.TrimStart('0');
         }
     }
 }

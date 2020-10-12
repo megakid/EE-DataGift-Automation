@@ -2,7 +2,7 @@
   "profiles": {
     "EEDataGift": {
       "commandName": "Project",
-      "commandLineArgs": "-h"
+      "commandLineArgs": ""
     }
   }
 }

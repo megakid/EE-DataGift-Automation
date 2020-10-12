@@ -46,3 +46,7 @@ Ankh.NoLoad
 #Other
 .svn
 .vs
+
+chromedriver.exe
+chromedriver_win32.zip
+
