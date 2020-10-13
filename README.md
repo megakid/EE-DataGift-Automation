@@ -1,3 +1,6 @@
+
+[![Build status](https://img.shields.io/nuget/v/EEDataGift)](https://www.nuget.org/packages/EEDataGift)
+
 # EE-DataGift-Automation
 
 ```
